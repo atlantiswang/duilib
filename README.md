@@ -4,6 +4,13 @@ Duilib是一个Windows下免费开源的DirectUI界面库，由于简约易扩�
 
 欢迎为Duilib提供功能改进、代码修补、bug反馈、使用文档和献计献策，让我们一起把Duilib做的更好！
 
+# cmake编译
+
+- mkdir build
+- cd build
+- cmake ..
+- cmake --build .
+
 # 快速安装
 
 您可以使用[vcpkg](https://github.com/Microsoft/vcpkg)库管理器下载并安装duilib:
