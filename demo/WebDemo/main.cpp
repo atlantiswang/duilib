@@ -88,6 +88,7 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmd
 
     // 初始化WebApp
     CefRefPtr<WebApp> app(new WebApp);
+    // 设置duilib地主窗口句柄到WebApp，用于回调通知
     app->SetParentWnd(wnd->GetHWND());
     // Initialize CEF.
     CefInitialize(main_args, settings, app.get(), sandbox_info);

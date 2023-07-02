@@ -33,8 +33,9 @@ list(REMOVE_ITEM CEF_CXX_COMPILER_FLAGS /std:c++17)
 # UIDefine.h(105,13): warning C4121: 'DuiLib::DUI_MSGMAP_ENTRY': alignment of a member was sensitive to packing
 list(REMOVE_ITEM CEF_COMPILER_FLAGS /WX)
 
-
+# 设置工程编译、链接等参数
 SET_EXECUTABLE_TARGET_PROPERTIES(${CEF_TARGET})
+
 target_link_libraries(${CEF_TARGET} libcef_lib libcef_dll_wrapper ${CEF_STANDARD_LIBS} duilib)
 
 if(USE_SANDBOX)
