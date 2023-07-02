@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window size="800,600" sizebox="4,4,6,6" caption="0,0,0,90" mininfo="800,570" roundcorner="5,5" showdirty="false" >
+<Font id="0" name="宋体" size="26" bold="false"/>
+<Container>
+<VerticalLayout inset="4,0,4,4" bkcolor="#FF60B1FE" bordercolor="#FF1B4876" bordersize="1" borderround="5,5">
+    <HorizontalLayout height="94" bkcolor="#FF8DD3FF" bkcolor2="#FF60B1FE">
+    	<HorizontalLayout width="100">
+    		<Label width="100" text="WebDemo"  font="0" />
+    	</HorizontalLayout>
+		<Control />
+    	<HorizontalLayout width="94" >
+    		<Button name="minbtn" maxwidth="80" maxheight="50" normalimage="file='frame_btn_min.bmp' source='0,0,26,18' mask='#FFFF00FF'" hotimage="file='frame_btn_min.bmp' source='26,0,52,18' mask='#FFFF00FF'" pushedimage="file='frame_btn_min.bmp' source='52,0,78,18' mask='#FFFF00FF'"/>
+    		<Button name="maxbtn" visible="false" maxwidth="80" maxheight="50" normalimage="file='frame_btn_max.bmp' source='0,0,26,18' mask='#FFFF00FF'" hotimage="file='frame_btn_max.bmp' source='26,0,52,18' mask='#FFFF00FF'" pushedimage="file='frame_btn_max.bmp' source='52,0,78,18' mask='#FFFF00FF'"/>
+    		<Button name="restorebtn" maxwidth="80" maxheight="50" normalimage="file='frame_btn_max.bmp' source='104,0,130,18' mask='#FFFF00FF'" hotimage="file='frame_btn_max.bmp' source='130,0,156,18' mask='#FFFF00FF'" pushedimage="file='frame_btn_max.bmp' source='156,0,182,18' mask='#FFFF00FF'" />
+    		<Button name="closebtn" maxwidth="100" maxheight="50" normalimage="file='frame_btn_close_normal.bmp' mask='#FFFF00FF'" hotimage="file='frame_btn_close_hot.bmp' mask='#FFFF00FF'" pushedimage="file='frame_btn_close_down.bmp' mask='#FFFF00FF'"/>
+    	</HorizontalLayout>
+    </HorizontalLayout>
+	<HorizontalLayout height="150" inset="0,2,0,0" bkcolor="#FFFF0000" >
+		<Label text="网址：" width="80" padding="5,0,0,5" font="0" />
+		<Edit name="edit_url" font="0" />
+		<Button text="GO" name="btn_go" width="150" height="150" padding="5,0,0,5" font="0" />
+	</HorizontalLayout>
+	<TabLayout name="web_container" inset="0,4,0,8" bkcolor="#FF0000FF" >
+	</TabLayout>
+</VerticalLayout>
+</Container>
+</Window>
