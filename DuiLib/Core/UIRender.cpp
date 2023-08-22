@@ -1193,8 +1193,8 @@ void CRenderEngine::DrawGradient(HDC hDC, const RECT& rc, DWORD dwFirst, DWORD d
     {
         TRIVERTEX triv[2] = 
         {
-            { rcPaint.left, rcPaint.top, GetBValue(dwFirst) << 8, GetGValue(dwFirst) << 8, GetRValue(dwFirst) << 8, 0xFF00 },
-            { rcPaint.right, rcPaint.bottom, GetBValue(dwSecond) << 8, GetGValue(dwSecond) << 8, GetRValue(dwSecond) << 8, 0xFF00 }
+            { rcPaint.left, rcPaint.top, (COLOR16)(GetBValue(dwFirst) << 8), (COLOR16)(GetGValue(dwFirst) << 8), (COLOR16)(GetRValue(dwFirst) << 8), (COLOR16)0xFF00 },
+            { rcPaint.right, rcPaint.bottom, (COLOR16)(GetBValue(dwSecond) << 8), (COLOR16)(GetGValue(dwSecond) << 8), (COLOR16)(GetRValue(dwSecond) << 8), (COLOR16)0xFF00 }
         };
         GRADIENT_RECT grc = { 0, 1 };
         lpGradientFill(hPaintDC, triv, 2, &grc, 1, bVertical ? GRADIENT_FILL_RECT_V : GRADIENT_FILL_RECT_H);
@@ -1384,7 +1384,7 @@ void CRenderEngine::DrawHtmlText(HDC hDC, CPaintManagerUI* pManager, RECT& rc, L
     POINT pt = { rc.left, rc.top };
     int iLinkIndex = 0;
 	int cxLine = 0;
-    int cyLine = pTm->tmHeight + pTm->tmExternalLeading + (int)aPIndentArray.GetAt(aPIndentArray.GetSize() - 1);
+    int cyLine = pTm->tmHeight + pTm->tmExternalLeading + (intptr_t)aPIndentArray.GetAt(aPIndentArray.GetSize() - 1);
     int cyMinHeight = 0;
     int cxMaxWidth = 0;
     POINT ptLinkStart = { 0 };
@@ -1451,7 +1451,7 @@ void CRenderEngine::DrawHtmlText(HDC hDC, CPaintManagerUI* pManager, RECT& rc, L
             if( pt.y > rc.bottom && bDraw ) 
 				break;
             ptLinkStart = pt;
-            cyLine = pTm->tmHeight + pTm->tmExternalLeading + (int)aPIndentArray.GetAt(aPIndentArray.GetSize() - 1);
+            cyLine = pTm->tmHeight + pTm->tmExternalLeading + (intptr_t)aPIndentArray.GetAt(aPIndentArray.GetSize() - 1);
             if( pt.x >= rc.right )
 				break;
         }
@@ -1485,7 +1485,7 @@ void CRenderEngine::DrawHtmlText(HDC hDC, CPaintManagerUI* pManager, RECT& rc, L
                     //    if( ::PtInRect(&rc, ptMouse) )
                     //        clrColor = pManager->GetDefaultLinkHoverFontColor();
                     //}
-                    aColorArray.Add((LPVOID)clrColor);
+                    aColorArray.Add((LPVOID)(uintptr_t)clrColor);
                     ::SetTextColor(hDC,  RGB(GetBValue(clrColor), GetGValue(clrColor), GetRValue(clrColor)));
                     TFontInfo* pFontInfo = pManager->GetFontInfo(iDefaultFont);
                     if( aFontArray.GetSize() > 0 ) pFontInfo = (TFontInfo*)aFontArray.GetAt(aFontArray.GetSize() - 1);
@@ -1499,7 +1499,7 @@ void CRenderEngine::DrawHtmlText(HDC hDC, CPaintManagerUI* pManager, RECT& rc, L
                         aFontArray.Add(pFontInfo);
                         pTm = &pFontInfo->tm;
                         ::SelectObject(hDC, pFontInfo->hFont);
-                        cyLine = MAX(cyLine, pTm->tmHeight + pTm->tmExternalLeading + (int)aPIndentArray.GetAt(aPIndentArray.GetSize() - 1));
+                        cyLine = MAX(cyLine, pTm->tmHeight + pTm->tmExternalLeading + (intptr_t)aPIndentArray.GetAt(aPIndentArray.GetSize() - 1));
                     }
                     ptLinkStart = pt;
                     bInLink = true;
@@ -1520,7 +1520,7 @@ void CRenderEngine::DrawHtmlText(HDC hDC, CPaintManagerUI* pManager, RECT& rc, L
                         aFontArray.Add(pFontInfo);
                         pTm = &pFontInfo->tm;
                         ::SelectObject(hDC, pFontInfo->hFont);
-                        cyLine = MAX(cyLine, pTm->tmHeight + pTm->tmExternalLeading + (int)aPIndentArray.GetAt(aPIndentArray.GetSize() - 1));
+                        cyLine = MAX(cyLine, pTm->tmHeight + pTm->tmExternalLeading + (intptr_t)aPIndentArray.GetAt(aPIndentArray.GetSize() - 1));
                     }
                 }
                 break;
@@ -1530,7 +1530,7 @@ void CRenderEngine::DrawHtmlText(HDC hDC, CPaintManagerUI* pManager, RECT& rc, L
                     while( *pstrText > _T('\0') && *pstrText <= _T(' ') ) pstrText = ::CharNext(pstrText);
                     if( *pstrText == _T('#')) pstrText++;
                     DWORD clrColor = _tcstol(pstrText, const_cast<LPTSTR*>(&pstrText), 16);
-                    aColorArray.Add((LPVOID)clrColor);
+                    aColorArray.Add((LPVOID)(uintptr_t)clrColor);
                     ::SetTextColor(hDC, RGB(GetBValue(clrColor), GetGValue(clrColor), GetRValue(clrColor)));
                 }
                 break;
@@ -1585,7 +1585,7 @@ void CRenderEngine::DrawHtmlText(HDC hDC, CPaintManagerUI* pManager, RECT& rc, L
                         pTm = &pFontInfo->tm;
                         ::SelectObject(hDC, pFontInfo->hFont);
                     }
-                    cyLine = MAX(cyLine, pTm->tmHeight + pTm->tmExternalLeading + (int)aPIndentArray.GetAt(aPIndentArray.GetSize() - 1));
+                    cyLine = MAX(cyLine, pTm->tmHeight + pTm->tmExternalLeading + (intptr_t)aPIndentArray.GetAt(aPIndentArray.GetSize() - 1));
                 }
                 break;
             case _T('i'):  // Italic or Image
@@ -1618,7 +1618,7 @@ void CRenderEngine::DrawHtmlText(HDC hDC, CPaintManagerUI* pManager, RECT& rc, L
                             aFontArray.Add(pFontInfo);
                             pTm = &pFontInfo->tm;
                             ::SelectObject(hDC, pFontInfo->hFont);
-                            cyLine = MAX(cyLine, pTm->tmHeight + pTm->tmExternalLeading + (int)aPIndentArray.GetAt(aPIndentArray.GetSize() - 1));
+                            cyLine = MAX(cyLine, pTm->tmHeight + pTm->tmExternalLeading + (intptr_t)aPIndentArray.GetAt(aPIndentArray.GetSize() - 1));
                         }
                     }
                     else {
@@ -1686,7 +1686,7 @@ void CRenderEngine::DrawHtmlText(HDC hDC, CPaintManagerUI* pManager, RECT& rc, L
                                 if( bDraw && bLineDraw ) {
                                     CDuiRect rcImage(pt.x + cxOffset, pt.y + cyLineHeight - iHeight, pt.x + + cxOffset + iWidth, pt.y + cyLineHeight);
 									iVAlign = DT_BOTTOM;
-									if (aVAlignArray.GetSize() > 0) iVAlign = (UINT)aVAlignArray.GetAt(aVAlignArray.GetSize() - 1); 
+									if (aVAlignArray.GetSize() > 0) iVAlign = (uintptr_t)aVAlignArray.GetAt(aVAlignArray.GetSize() - 1); 
 									if (iVAlign == DT_VCENTER) {
 										if( iHeight < cyLineHeight ) { 
 											rcImage.bottom -= (cyLineHeight - iHeight) / 2;
@@ -1732,7 +1732,7 @@ void CRenderEngine::DrawHtmlText(HDC hDC, CPaintManagerUI* pManager, RECT& rc, L
                     if( pt.x > rc.left ) bLineEnd = true;
                     while( *pstrText > _T('\0') && *pstrText <= _T(' ') ) pstrText = ::CharNext(pstrText);
                     int cyLineExtra = (int)_tcstol(pstrText, const_cast<LPTSTR*>(&pstrText), 10);
-                    aPIndentArray.Add((LPVOID)cyLineExtra);
+                    aPIndentArray.Add((LPVOID)(intptr_t)cyLineExtra);
                     cyLine = MAX(cyLine, pTm->tmHeight + pTm->tmExternalLeading + cyLineExtra);
                 }
                 break;
@@ -1751,7 +1751,7 @@ void CRenderEngine::DrawHtmlText(HDC hDC, CPaintManagerUI* pManager, RECT& rc, L
 					UINT iVAlign = DT_BOTTOM;
 					if (sVAlignStyle.CompareNoCase(_T("center")) == 0) iVAlign = DT_VCENTER;
 					else if (sVAlignStyle.CompareNoCase(_T("top")) == 0) iVAlign = DT_TOP;
-					aVAlignArray.Add((LPVOID)iVAlign);
+					aVAlignArray.Add((LPVOID)(uintptr_t)iVAlign);
 				}
 				break;
             case _T('r'):  // Raw Text
@@ -1785,7 +1785,7 @@ void CRenderEngine::DrawHtmlText(HDC hDC, CPaintManagerUI* pManager, RECT& rc, L
                         aFontArray.Add(pFontInfo);
                         pTm = &pFontInfo->tm;
                         ::SelectObject(hDC, pFontInfo->hFont);
-                        cyLine = MAX(cyLine, pTm->tmHeight + pTm->tmExternalLeading + (int)aPIndentArray.GetAt(aPIndentArray.GetSize() - 1));
+                        cyLine = MAX(cyLine, pTm->tmHeight + pTm->tmExternalLeading + (intptr_t)aPIndentArray.GetAt(aPIndentArray.GetSize() - 1));
                     }
                 }
                 break;
@@ -1822,7 +1822,7 @@ void CRenderEngine::DrawHtmlText(HDC hDC, CPaintManagerUI* pManager, RECT& rc, L
                     pstrText++;
                     aColorArray.Remove(aColorArray.GetSize() - 1);
                     DWORD clrColor = dwTextColor;
-                    if( aColorArray.GetSize() > 0 ) clrColor = (int)aColorArray.GetAt(aColorArray.GetSize() - 1);
+                    if( aColorArray.GetSize() > 0 ) clrColor = (intptr_t)aColorArray.GetAt(aColorArray.GetSize() - 1);
                     ::SetTextColor(hDC, RGB(GetBValue(clrColor), GetGValue(clrColor), GetRValue(clrColor)));
                 }
                 break;
@@ -1830,7 +1830,7 @@ void CRenderEngine::DrawHtmlText(HDC hDC, CPaintManagerUI* pManager, RECT& rc, L
                 pstrText++;
                 if( pt.x > rc.left ) bLineEnd = true;
                 aPIndentArray.Remove(aPIndentArray.GetSize() - 1);
-                cyLine = MAX(cyLine, pTm->tmHeight + pTm->tmExternalLeading + (int)aPIndentArray.GetAt(aPIndentArray.GetSize() - 1));
+                cyLine = MAX(cyLine, pTm->tmHeight + pTm->tmExternalLeading + (intptr_t)aPIndentArray.GetAt(aPIndentArray.GetSize() - 1));
                 break;
 			case _T('v'):
 				pstrText++;
@@ -1854,7 +1854,7 @@ void CRenderEngine::DrawHtmlText(HDC hDC, CPaintManagerUI* pManager, RECT& rc, L
                     }
                     aColorArray.Remove(aColorArray.GetSize() - 1);
                     DWORD clrColor = dwTextColor;
-                    if( aColorArray.GetSize() > 0 ) clrColor = (int)aColorArray.GetAt(aColorArray.GetSize() - 1);
+                    if( aColorArray.GetSize() > 0 ) clrColor = (intptr_t)aColorArray.GetAt(aColorArray.GetSize() - 1);
                     ::SetTextColor(hDC, RGB(GetBValue(clrColor), GetGValue(clrColor), GetRValue(clrColor)));
                     bInLink = false;
                 }
@@ -1874,7 +1874,7 @@ void CRenderEngine::DrawHtmlText(HDC hDC, CPaintManagerUI* pManager, RECT& rc, L
 					}
                     pTm = &pFontInfo->tm;
                     ::SelectObject(hDC, pFontInfo->hFont);
-                    cyLine = MAX(cyLine, pTm->tmHeight + pTm->tmExternalLeading + (int)aPIndentArray.GetAt(aPIndentArray.GetSize() - 1));
+                    cyLine = MAX(cyLine, pTm->tmHeight + pTm->tmExternalLeading + (intptr_t)aPIndentArray.GetAt(aPIndentArray.GetSize() - 1));
                 }
                 break;
             }
@@ -1887,7 +1887,7 @@ void CRenderEngine::DrawHtmlText(HDC hDC, CPaintManagerUI* pManager, RECT& rc, L
             ::GetTextExtentPoint32(hDC, &pstrText[1], 1, &szSpace);
             if( bDraw && bLineDraw ) {
 				iVAlign = DT_BOTTOM;
-				if (aVAlignArray.GetSize() > 0) iVAlign = (UINT)aVAlignArray.GetAt(aVAlignArray.GetSize() - 1); 
+				if (aVAlignArray.GetSize() > 0) iVAlign = (uintptr_t)aVAlignArray.GetAt(aVAlignArray.GetSize() - 1); 
 				if (iVAlign == DT_VCENTER) ::TextOut(hDC, pt.x + cxOffset, pt.y + (cyLineHeight - pTm->tmHeight - pTm->tmExternalLeading)/2, &pstrText[1], 1);
 				else if (iVAlign == DT_TOP) ::TextOut(hDC, pt.x + cxOffset, pt.y, &pstrText[1], 1);
 				else ::TextOut(hDC, pt.x + cxOffset, pt.y + cyLineHeight - pTm->tmHeight - pTm->tmExternalLeading, &pstrText[1], 1);
@@ -1903,7 +1903,7 @@ void CRenderEngine::DrawHtmlText(HDC hDC, CPaintManagerUI* pManager, RECT& rc, L
             ::GetTextExtentPoint32(hDC, &pstrText[1], 1, &szSpace);
             if( bDraw && bLineDraw ) {
 				iVAlign = DT_BOTTOM;
-				if (aVAlignArray.GetSize() > 0) iVAlign = (UINT)aVAlignArray.GetAt(aVAlignArray.GetSize() - 1); 
+				if (aVAlignArray.GetSize() > 0) iVAlign = (uintptr_t)aVAlignArray.GetAt(aVAlignArray.GetSize() - 1);
 				if (iVAlign == DT_VCENTER) ::TextOut(hDC, pt.x + cxOffset, pt.y + (cyLineHeight - pTm->tmHeight - pTm->tmExternalLeading)/2, &pstrText[1], 1);
 				else if (iVAlign == DT_TOP) ::TextOut(hDC, pt.x + cxOffset, pt.y, &pstrText[1], 1);
 				else ::TextOut(hDC, pt.x + cxOffset, pt.y + cyLineHeight - pTm->tmHeight - pTm->tmExternalLeading, &pstrText[1], 1);
@@ -1921,7 +1921,7 @@ void CRenderEngine::DrawHtmlText(HDC hDC, CPaintManagerUI* pManager, RECT& rc, L
             // underline formatting.
             if( bDraw && bLineDraw ) {
 				iVAlign = DT_BOTTOM;
-				if (aVAlignArray.GetSize() > 0) iVAlign = (UINT)aVAlignArray.GetAt(aVAlignArray.GetSize() - 1); 
+				if (aVAlignArray.GetSize() > 0) iVAlign = (uintptr_t)aVAlignArray.GetAt(aVAlignArray.GetSize() - 1);
 				if (iVAlign == DT_VCENTER) ::TextOut(hDC, pt.x + cxOffset, pt.y + (cyLineHeight - pTm->tmHeight - pTm->tmExternalLeading)/2, _T(" "), 1);
 				else if (iVAlign == DT_TOP) ::TextOut(hDC, pt.x + cxOffset, pt.y, _T(" "), 1);
 				else ::TextOut(hDC, pt.x + cxOffset, pt.y + cyLineHeight - pTm->tmHeight - pTm->tmExternalLeading, _T(" "), 1);
@@ -2004,7 +2004,7 @@ void CRenderEngine::DrawHtmlText(HDC hDC, CPaintManagerUI* pManager, RECT& rc, L
             ::GetTextExtentPoint32(hDC, pstrText, cchSize, &szText);
             if( bDraw && bLineDraw ) {
 				iVAlign = DT_BOTTOM;
-				if (aVAlignArray.GetSize() > 0) iVAlign = (UINT)aVAlignArray.GetAt(aVAlignArray.GetSize() - 1); 
+				if (aVAlignArray.GetSize() > 0) iVAlign = (uintptr_t)aVAlignArray.GetAt(aVAlignArray.GetSize() - 1);
 				if (iVAlign == DT_VCENTER) ::TextOut(hDC, pt.x + cxOffset, pt.y + (cyLineHeight - pTm->tmHeight - pTm->tmExternalLeading)/2, pstrText, cchSize);
 				else if (iVAlign == DT_TOP) ::TextOut(hDC, pt.x + cxOffset, pt.y, pstrText, cchSize);
 				else ::TextOut(hDC, pt.x + cxOffset, pt.y + cyLineHeight - pTm->tmHeight - pTm->tmExternalLeading, pstrText, cchSize);
@@ -2040,7 +2040,7 @@ void CRenderEngine::DrawHtmlText(HDC hDC, CPaintManagerUI* pManager, RECT& rc, L
                 bInSelected = bLineInSelected;
 
                 DWORD clrColor = dwTextColor;
-                if( aColorArray.GetSize() > 0 ) clrColor = (int)aColorArray.GetAt(aColorArray.GetSize() - 1);
+                if( aColorArray.GetSize() > 0 ) clrColor = (intptr_t)aColorArray.GetAt(aColorArray.GetSize() - 1);
                 ::SetTextColor(hDC, RGB(GetBValue(clrColor), GetGValue(clrColor), GetRValue(clrColor)));
                 TFontInfo* pFontInfo = (TFontInfo*)aFontArray.GetAt(aFontArray.GetSize() - 1);
                 if( pFontInfo == NULL ) pFontInfo = pManager->GetFontInfo(iDefaultFont);

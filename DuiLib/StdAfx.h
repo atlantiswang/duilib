@@ -34,11 +34,11 @@
 
 // Remove pointless warning messages
 #ifdef _MSC_VER
-#pragma warning (disable : 4511) // copy operator could not be generated
-#pragma warning (disable : 4512) // assignment operator could not be generated
-#pragma warning (disable : 4702) // unreachable code (bugs in Microsoft's STL)
-#pragma warning (disable : 4786) // identifier was truncated
-#pragma warning (disable : 4996) // function or variable may be unsafe (deprecated)
+//#pragma warning (disable : 4511) // copy operator could not be generated
+//#pragma warning (disable : 4512) // assignment operator could not be generated
+//#pragma warning (disable : 4702) // unreachable code (bugs in Microsoft's STL)
+//#pragma warning (disable : 4786) // identifier was truncated
+//#pragma warning (disable : 4996) // function or variable may be unsafe (deprecated)
 #ifndef _CRT_SECURE_NO_WARNINGS
 #define _CRT_SECURE_NO_WARNINGS // eliminate deprecation warnings for VS2005
 #endif
